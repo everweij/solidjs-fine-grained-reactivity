@@ -66,7 +66,7 @@ export class Computation<Next> implements IComputation {
     }
     this.cleanups.clear();
 
-    // Next, let all dependencies knwo that this computation is no longer interested in them.
+    // Next, let all dependencies know that this computation is no longer interested in them.
     for (const signal of this.dependencies) {
       signal.removeComputation(this);
     }

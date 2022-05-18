@@ -33,16 +33,12 @@ export function createEffect<Next>(
  * that execution doesn't need to be scheduled, but instead can be performed immediately
  */
 export function createMemo<T>(fn: () => T, debugName?: string): Accessor<T> {
-  const signal = new Signal<T>(null!, `memo-signal ${debugName}`);
+  const signal = new Signal<T>(null!);
 
-  new Computation(
-    () => {
-      const value = fn();
-      untrack(() => signal.setValue(value));
-    },
-    true,
-    `memo-computation ${debugName}`
-  );
+  new Computation(() => {
+    const value = fn();
+    untrack(() => signal.setValue(value));
+  }, true);
 
   return signal.getValue;
 }

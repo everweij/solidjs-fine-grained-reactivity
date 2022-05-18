@@ -1,30 +1,26 @@
 import type { Accessor, AnyObject, Falsey } from "./types";
 
-export function isFalsey(value: unknown): value is Falsey {
-  return value === undefined || value === null || value === false;
-}
+export const isFalsey = (value: unknown): value is Falsey =>
+  value === undefined || value === null || value === false;
 
-export function isFn(value: unknown): value is Function {
-  return typeof value === "function";
-}
+export const isFn = (value: unknown): value is Function =>
+  typeof value === "function";
 
-export function isNull(value: unknown): value is null {
-  return value === null;
-}
+export const isNull = (value: unknown): value is null => value === null;
 
-export function isObject(value: unknown): value is AnyObject {
-  return typeof value === "object" && !isNull(value);
-}
+export const isObject = (value: unknown): value is AnyObject =>
+  typeof value === "object" && !isNull(value);
 
-export function isString(value: unknown): value is string {
-  return typeof value === "string";
-}
+export const isString = (value: unknown): value is string =>
+  typeof value === "string";
 
-export function isNumber(value: unknown): value is number {
-  return typeof value === "number";
-}
+export const isNumber = (value: unknown): value is number =>
+  typeof value === "number";
 
 export const isArray = Array.isArray;
+
+export const isEmpty = (value: unknown): value is Falsey | "" =>
+  isFalsey(value) || value === "";
 
 /**
  * Recursively calls a function until it is able to return a value.
@@ -38,9 +34,10 @@ export function unpack<T>(value: T | Accessor<T>): T {
   return current;
 }
 
-export function isEventListener(property: string): boolean {
-  return property.startsWith("on");
-}
+export const isEventListener = (property: string): boolean =>
+  property.startsWith("on");
+
+export const isStyleProp = (property: string): boolean => property === "style";
 
 /**
  * Returns a new object by mapping over each entry (key / value) of a given object.
@@ -53,3 +50,7 @@ export function mapObject<T>(
     Object.entries(object).map(([key, value]) => mapper(key as keyof T, value))
   ) as any;
 }
+
+export const identity = <T>(value: T): T => value;
+
+export const EMPTY_OBJECT = {};

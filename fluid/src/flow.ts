@@ -84,7 +84,7 @@ export function For<T>(props: ForProps<T>) {
 
     // return and memo the list of children
     return nextChildren;
-  }, "for");
+  });
 
   // When this component unmounts... also clean up all items in the list by calling
   // each disposer function.
