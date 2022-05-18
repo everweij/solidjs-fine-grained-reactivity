@@ -1,4 +1,4 @@
-import { Accessor, AnyObject, Falsey } from "./types";
+import type { Accessor, AnyObject, Falsey } from "./types";
 
 export function isFalsey(value: unknown): value is Falsey {
   return value === undefined || value === null || value === false;

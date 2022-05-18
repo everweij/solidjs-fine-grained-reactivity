@@ -1,4 +1,5 @@
-import { Signal, batch } from "./reactive";
+import { batch } from "./reactive";
+import { Signal } from "./reactive/signal";
 import type { AnyObject, Predicate } from "./types";
 import { isArray, isFn, isNumber, isObject, isString, mapObject } from "./util";
 

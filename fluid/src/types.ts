@@ -17,3 +17,5 @@ export type Predicate<T = any> = (value: T) => boolean;
 
 export type Child = string | number | false | Node;
 export type Children = (Child | Accessor<Child>)[];
+
+export type Disposer = () => void;

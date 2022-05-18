@@ -1,4 +1,5 @@
-import { onCleanup, Disposer, createRoot, createMemo } from "./reactive";
+import { onCleanup, createRoot, createMemo } from "./reactive";
+import type { Disposer } from "./types";
 
 interface BaseProps<T> {
   each: () => T[];

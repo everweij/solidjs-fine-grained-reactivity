@@ -4,6 +4,8 @@ export {
   createMemo,
   createSignal,
   createRoot,
+  onCleanup,
+  untrack,
   batch,
 } from "./reactive";
 export type { Accessor, Setter, Style, CSSProperties } from "./types";
