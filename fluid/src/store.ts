@@ -9,20 +9,27 @@ const PROXY = Symbol("proxy");
 interface ProxiedObject {
   [ORIGINAL]: AnyObject;
   [PROXY]: boolean;
+  [key: string]: unknown;
 }
 
+// Function that given an object will return a new object with the same keys
+// but with values wrapped in signals internally instead.
 function wrapProxy(maybeObject: unknown): unknown {
+  // return eatly if the provided value is not the type we're looking for
   if (!isObject(maybeObject) || isArray(maybeObject)) {
     return maybeObject;
   }
 
+  // Map over the object and see where we can wrap the value in a signal where possible
   const object = mapObject(maybeObject, (key, value) => {
     if (isArray(value)) {
+      // In case of an array, we need to both wrap the array as well as each individual item
       const mapped = value.map((value) => wrapProxy(value));
       return [key, new Signal(mapped)];
     }
 
     if (isObject(value)) {
+      // in case of a nested object, we need to wrap this object recursively
       return [key, wrapProxy(value as AnyObject)];
     }
 
@@ -31,35 +38,45 @@ function wrapProxy(maybeObject: unknown): unknown {
 
   return new Proxy(object, {
     get(obj, prop) {
-      if (prop === ORIGINAL) {
-        return obj;
+      // We're using symbols as a sort of backdoor to the original object
+      if (typeof prop === "symbol") {
+        if (prop === ORIGINAL) {
+          return obj;
+        }
+
+        if (prop === PROXY) {
+          return true;
+        }
+
+        throw new Error(`Unexpected symbol`);
       }
 
-      if (prop === PROXY) {
-        return true;
-      }
-
-      // @ts-ignore
+      // Get the value out of the signal of applicable
       const value = obj[prop];
-
-      if (value instanceof Signal) {
-        return value.getValue();
-      }
-
-      return value;
+      return value instanceof Signal ? value.getValue() : value;
     },
   });
 }
 
+/**
+ * Function that helps you to create a deep nested reactive store.
+ * @see https://www.solidjs.com/docs/latest/api#createstore
+ *
+ * Note: this is a approximation of the createStore function from solid-js.
+ */
 export function createStore<T extends AnyObject>(initialState: T) {
+  // Start by bootstrapping the initial provided state
   const state = wrapProxy(initialState);
 
+  // The first couple of parameters are for selector-purposes, the last one is
+  // alwasys reserverd for setting the final state
   function setState<
     Args extends [...Array<string | number | Predicate>, AnyObject | Function]
   >(...args: Args) {
     batch(() => {
       let stateToBeSet: unknown = state;
 
+      // loop over the arguments and select the correct state step by step
       for (const arg of args.slice(0, -1)) {
         const isPropertyKey = isNumber(arg) || isString(arg);
         const isPredicate = isFn(arg);
@@ -81,28 +98,39 @@ export function createStore<T extends AnyObject>(initialState: T) {
         }
       }
 
+      // The last argument is always the (partial-)state to be set (or setter function)
       const partialStateOrSetter = args.at(-1);
 
       // convert it to an array for convinience
       stateToBeSet = isArray(stateToBeSet) ? stateToBeSet : [stateToBeSet];
 
       for (const state of stateToBeSet as ProxiedObject[]) {
+        // obtain key/value pairs to iterate over
         const entries = Object.entries(
           isFn(partialStateOrSetter)
             ? partialStateOrSetter(state)
             : partialStateOrSetter
         );
 
+        // get a reference to the original object (un-proxied)
         const original = state[ORIGINAL];
 
         for (const [key, value] of entries) {
           const currentValue = original[key];
           if (currentValue instanceof Signal) {
+            // Note: overwriting the old array may seem like introducing a
+            // memory-leak because there's no pro-active clean-up being performed.
+            // However, since the signal is most likely tied to a specific component, and
+            // that component is going to be destroyed anyway, resulting in effects unsubscribing from
+            // all removed signals, the memory-leak is probably not a problem.
+            //
+            // Checks if we should wrap the new value in a proxy
             const nextValue = isArray(value)
               ? value.map((value) => (value[PROXY] ? value : wrapProxy(value)))
               : value;
             currentValue.setValue(nextValue);
           } else {
+            // Should we ever and up here?
             (state as unknown as AnyObject)[key] = value;
           }
         }

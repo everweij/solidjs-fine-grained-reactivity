@@ -36,7 +36,7 @@ export class BatchComputation implements IBatchComputation {
     }
 
     // All that remains a possible collection of signals that are still waiting to
-    // to marked as stable. In other words: appearently those signals were 'wrongly' marked
+    // to marked as stable. In other words: Apparently those signals were 'wrongly' marked
     // as stale, and had no real impact. We could not know this beforehand though. So, let's mark
     // them stable again, which in turn might trigger some remaining computations (computations that
     // were marked as being stale, but didn't run yet because not all dependencies were marked as stable).

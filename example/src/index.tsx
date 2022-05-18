@@ -1,5 +1,3 @@
-// Inspired by: https://todomvc.com/examples/react/
-
 import "../../shared/reset.css";
 import "../../shared/todo.css";
 import { createMemo, For, render, createStore } from "fluid";

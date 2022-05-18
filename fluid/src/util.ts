@@ -26,6 +26,9 @@ export function isNumber(value: unknown): value is number {
 
 export const isArray = Array.isArray;
 
+/**
+ * Recursively calls a function until it is able to return a value.
+ */
 export function unpack<T>(value: T | Accessor<T>): T {
   let current: T | Accessor<T> = value;
   while (isFn(current)) {
@@ -39,6 +42,9 @@ export function isEventListener(property: string): boolean {
   return property.startsWith("on");
 }
 
+/**
+ * Returns a new object by mapping over each entry (key / value) of a given object.
+ */
 export function mapObject<T>(
   object: T,
   mapper: (key: keyof T, value: unknown) => [keyof T, unknown]

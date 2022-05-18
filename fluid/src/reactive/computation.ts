@@ -82,7 +82,7 @@ export class Computation<Next> implements IComputation {
     this.cleanups.add(cleanup);
   }
 
-  // A way for a dependency to tell this signal that appearently this computation is interested in it.
+  // A way for a dependency to tell this signal that Apparently this computation is interested in it.
   addDependency(dependency: ISignal): void {
     this.dependencies.add(dependency);
   }

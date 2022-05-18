@@ -7,7 +7,7 @@ import { BatchComputation } from "./batch-computation";
  * This class represents a reactive value, also called a signal.
  * It holds a close relationsship with a [Computation](./computation.ts).
  * When a value gets read from a signal, the current computation is added
- * internally to the list of computations that are appearently interested in
+ * internally to the list of computations that are Apparently interested in
  * this signal. This is useful later on, because when the signal's value gets
  * changed, we know which computations we need to notify about this event.
  */

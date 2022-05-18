@@ -1,7 +1,7 @@
 import { reconcileChildren, reconcileProperty } from "./reconciliation";
-import { createEffect, createRoot, Disposer } from "./reactive";
+import { createEffect, createRoot } from "./reactive";
 import { isFn, isString, unpack, isEventListener } from "./util";
-import type { Accessor, AnyObject, Child, Children } from "./types";
+import type { Accessor, AnyObject, Child, Children, Disposer } from "./types";
 
 function createComponent(
   Component: Function,
