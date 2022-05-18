@@ -1,0 +1,24 @@
+{
+  "name": "xke-solid-reactivity",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Erik Verweij <info@erikverweij.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "solid",
+    "fluid",
+    "example",
+    "babel-transform-fluid"
+  ],
+  "scripts": {
+    "solid": "yarn workspace solid start",
+    "example": "yarn workspace example start",
+    "fluid": "yarn workspace fluid start",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "vite": "^2.9.6",
+    "vitest": "^0.12.4"
+  }
+}

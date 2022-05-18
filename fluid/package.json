@@ -1,0 +1,23 @@
+{
+  "name": "fluid",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "devDependencies": {
+    "typescript": "^4.6.3",
+    "vite": "^2.9.6",
+    "vite-tsconfig-paths": "^3.4.1"
+  },
+  "scripts": {
+    "start": "vite dev --port 4000",
+    "compile": "rm -rf dist && tsc"
+  },
+  "files": [
+    "src",
+    "jsx-runtime.d.ts"
+  ],
+  "dependencies": {
+    "csstype": "^3.0.11",
+    "dom-expressions": "^0.32.18",
+    "hyper-dom-expressions": "^0.32.18"
+  }
+}
