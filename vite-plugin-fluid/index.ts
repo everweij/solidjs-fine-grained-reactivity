@@ -35,7 +35,7 @@ export default function fluid(): Plugin {
     },
 
     transform(src, path) {
-      if (!isWithinCWD(path) || !!hasValidExtension(path)) {
+      if (!isWithinCWD(path) || !hasValidExtension(path)) {
         return src;
       }
 

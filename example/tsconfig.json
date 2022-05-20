@@ -2,6 +2,7 @@
   "extends": "../tsconfig.json",
   "include": ["src/**/*"],
   "compilerOptions": {
+    "module": "ESNext",
     "jsx": "preserve",
     "jsxImportSource": "fluid",
     "types": ["vite/client"]

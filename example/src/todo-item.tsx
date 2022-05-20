@@ -10,6 +10,7 @@ export function TodoItem({ todo, onRemove, onToggle }: Props) {
   return (
     <li class="todo-item row">
       <input
+        data-testid="todo-checkbox"
         type="checkbox"
         checked={todo.completed}
         onChange={() => onToggle(todo.id)}
@@ -17,7 +18,11 @@ export function TodoItem({ todo, onRemove, onToggle }: Props) {
       <div class="center" data-completed={todo.completed}>
         {todo.title}
       </div>
-      <button class="remove-btn" onClick={() => onRemove(todo.id)}>
+      <button
+        data-testid="remove-btn"
+        class="remove-btn"
+        onClick={() => onRemove(todo.id)}
+      >
         ✕
       </button>
     </li>

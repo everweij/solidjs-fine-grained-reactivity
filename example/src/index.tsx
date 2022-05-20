@@ -93,7 +93,7 @@ function useTodos() {
   };
 }
 
-function App() {
+export function App() {
   const {
     todos,
     isAllCompleted,
@@ -142,4 +142,6 @@ function App() {
   );
 }
 
-render(() => <App />, document.getElementById("root")!);
+if (import.meta.env.NODE_ENV !== "test") {
+  render(() => <App />, document.getElementById("root")!);
+}

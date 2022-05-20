@@ -25,6 +25,7 @@ export function Top(props: Props) {
     <div class="top row">
       {props.numberOfTodos > 0 && (
         <button
+          data-testid="toggle-all-btn"
           class="toggle-all-btn"
           data-highlight={props.allCompleted}
           onClick={props.onToggleAllTodos}
@@ -37,7 +38,9 @@ export function Top(props: Props) {
         type="text"
         placeholder="What needs to be done?"
         value={title()}
-        onInput={(evt) => setTitle(evt.currentTarget.value)}
+        onInput={(evt) => {
+          setTitle(evt.currentTarget.value);
+        }}
         onKeyDown={handleKeyDown}
       />
     </div>
