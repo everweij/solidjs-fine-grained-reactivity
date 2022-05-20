@@ -5,11 +5,9 @@ import type {
   JSXAttribute,
   JSXElement,
   JSXExpressionContainer,
-  ObjectExpression,
   Identifier,
 } from "@babel/types";
 import type { VisitNodeFunction, Visitor } from "@babel/traverse";
-
 import { ensureFluidImport } from "./ensure-fluid-import";
 import { memoizeLogicalExpression } from "./memoize-logical-expression";
 import {
@@ -23,15 +21,16 @@ import {
   shouldTransformJSXExpression,
 } from "./dynamic-expressions";
 
+export type ExpressionToBeWrappedMap = Map<
+  NodePath<JSXAttribute>,
+  NodePath<JSXExpressionContainer>
+>;
+
 type State = {
-  expressionsToBeWrapped: Map<
-    NodePath<JSXAttribute>,
-    NodePath<JSXExpressionContainer>
-  > | null;
+  expressionsToBeWrapped: ExpressionToBeWrappedMap | null;
   ensureCreateMemoImport?: boolean;
   ensureJsxImport?: boolean;
   alreadyMemoed?: boolean;
-  transformJSX?: { componentName: string; props: ObjectExpression };
 };
 
 function getUniqueMemoId(path: NodePath): Identifier {

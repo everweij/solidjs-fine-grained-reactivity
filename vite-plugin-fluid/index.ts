@@ -1,21 +1,22 @@
-import type { Plugin } from "vite";
+import type { Plugin, TransformResult } from "vite";
 import { transformAsync } from "@babel/core";
 import babelPlugin from "./babel-plugin";
 import { relative, extname } from "path";
 import ts from "@babel/preset-typescript";
 
 const CWD = process.cwd();
-
 const isWithinCWD = (path: string) => !relative(CWD, path).startsWith("..");
+const hasValidExtension = (path: string) =>
+  [".jsx", ".tsx"].includes(extname(path));
 
 async function transform(code: string, filename: string) {
   const result = await transformAsync(code, {
     filename,
     plugins: [babelPlugin],
-    presets: [[ts, {}]],
+    presets: [ts],
   });
 
-  return result!;
+  return result! as TransformResult;
 }
 
 export default function fluid(): Plugin {
@@ -33,16 +34,12 @@ export default function fluid(): Plugin {
       };
     },
 
-    transform(src, id) {
-      if (!isWithinCWD(id)) {
+    transform(src, path) {
+      if (!isWithinCWD(path) || !!hasValidExtension(path)) {
         return src;
       }
 
-      if (![".jsx", ".tsx"].includes(extname(id))) {
-        return src;
-      }
-
-      return transform(src, id);
+      return transform(src, path);
     },
   };
 }

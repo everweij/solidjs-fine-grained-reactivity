@@ -7,11 +7,11 @@ function createStackBetween(
   ancestor: NodePath,
   descendant: NodePath
 ): NodePath[] {
-  let current = descendant;
+  let current: NodePath = descendant;
   const stack: NodePath[] = [];
   while (current !== ancestor) {
     stack.push(current);
-    current = current.parentPath;
+    current = current.parentPath!;
   }
 
   return stack;
@@ -24,14 +24,14 @@ function findMemoInsertionPoint(path: NodePath, scope: Scope): NodePath {
   const stack = createStackBetween(scope.path, path);
 
   if (t.isProgram(scope.path.node)) {
-    return stack.at(-1);
+    return stack.at(-1)!;
   }
 
   while (stack.length) {
     const current = stack.pop();
 
-    if ("body" in current.node) {
-      return stack.pop();
+    if ("body" in current!.node) {
+      return stack.pop()!;
     }
   }
 

@@ -3,6 +3,7 @@
   "include": ["src/**/*"],
   "compilerOptions": {
     "jsx": "preserve",
-    "jsxImportSource": "fluid"
+    "jsxImportSource": "fluid",
+    "types": ["vite/client"]
   }
 }

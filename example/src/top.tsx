@@ -1,4 +1,5 @@
 import { createSignal } from "fluid";
+import chevron from "../../shared/chevron.svg";
 
 type Props = {
   onAddTodo: (title: string) => void;
@@ -28,7 +29,7 @@ export function Top(props: Props) {
           data-highlight={props.allCompleted}
           onClick={props.onToggleAllTodos}
         >
-          <img src="/chevron.svg" />
+          <img src={chevron} />
         </button>
       )}
       <input

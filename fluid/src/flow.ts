@@ -68,6 +68,9 @@ export function For<T>(props: ForProps<T>) {
           // obtain the correct render function from props
           const render = "render" in props ? props.render : props.children;
 
+          // Where passing a getter-function as 2nd parameter, because the index
+          // might have changed since the last render. Maybe we should turn this
+          // into a signal also?
           nextChildren[index] = render(item, () => previous.list.indexOf(item));
           nextDisposers[index] = disposer;
         });

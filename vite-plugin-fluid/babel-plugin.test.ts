@@ -148,7 +148,7 @@ describe("babel-transform-fluid", () => {
 
   it("conditional memo's", () => {
     // TODO: somehow ternary expression like {signal() ? <div /> : <div />} causes a
-    // maximum call stack size exceeded error
+    // 'maximum call stack size exceeded' error
 
     const code = `
     function MyComponent() {
@@ -202,42 +202,5 @@ describe("babel-transform-fluid", () => {
     `;
 
     check(code, result);
-  });
-
-  it.skip("check", () => {
-    const code = `
-    const x = <main>
-    <h1>Todos</h1>
-    <div class="container">
-      <Top
-        allCompleted={isAllCompleted()}
-        numberOfTodos={numberOfTodos()}
-        onAddTodo={addTodo}
-        onToggleAllTodos={toggleAllTodos}
-      />
-      <ul>
-        <For each={todos}>
-          {(todo) => (
-            <TodoItem
-              todo={todo}
-              onToggle={toggleTodo}
-              onRemove={removeTodo}
-            />
-          )}
-        </For>
-      </ul>
-      {numberOfTodos() > 0 && (
-        <Bottom
-          filter={filter()}
-          numberOfActiveTodos={numberOfActiveTodos()}
-          onFilterChange={changeFilter}
-          onRemoveCompleted={removeCompletedTodos}
-        />
-      )}
-    </div>
-  </main>;
-    `;
-
-    console.log(transform(code));
   });
 });

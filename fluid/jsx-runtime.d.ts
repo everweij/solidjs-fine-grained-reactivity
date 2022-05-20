@@ -1,3 +1,6 @@
+// For more about working with JSX and Typescript see:
+// https://www.typescriptlang.org/docs/handbook/jsx.html
+
 import type { Accessor, Style } from "./src";
 
 type DOMElement = Element;

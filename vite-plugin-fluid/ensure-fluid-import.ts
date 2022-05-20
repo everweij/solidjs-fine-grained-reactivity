@@ -56,6 +56,7 @@ function createFluidImport(
   return program.get("body.0") as NodePath<ImportDeclaration>;
 }
 
+// This function makes sure that a certain fluid import is present in the file
 export function ensureFluidImport(
   program: NodePath<Program>,
   name: string,

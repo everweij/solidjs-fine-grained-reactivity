@@ -1,4 +1,5 @@
 import type { NodePath } from "@babel/core";
+import type { ExpressionToBeWrappedMap } from "./babel-plugin";
 import type {
   CallExpression,
   Expression,
@@ -15,8 +16,8 @@ import * as t from "@babel/types";
 import { getNameOfJSXIdentifier } from "./util";
 
 export function shouldTransformJSXExpression(
-  jsxExpressionContainer: NodePath<JSXExpressionContainer>
-): boolean {
+  jsxExpressionContainer: NodePath<JSXExpressionContainer> | null
+): jsxExpressionContainer is NodePath<JSXExpressionContainer> {
   if (!jsxExpressionContainer) {
     return false;
   }
@@ -59,10 +60,7 @@ function wrapJsxAttributeInObjectGetter(
 
 export function createPropsObjectFromJsxAttributes(
   attributes: NodePath<JSXAttribute>[],
-  expressionsToBeWrapped: Map<
-    NodePath<JSXAttribute>,
-    NodePath<JSXExpressionContainer>
-  >
+  expressionsToBeWrapped: ExpressionToBeWrappedMap
 ): ObjectExpression {
   const properties: (ObjectMethod | ObjectProperty)[] = [];
 
