@@ -143,12 +143,8 @@ export const Fragment = (props: { children: Node[] }) => props.children;
 
 // This is the entry point to an application.
 export function render(code: () => JSX.Element, root: HTMLElement): Disposer {
-  // Let's reserve a spot for the root dispose function
-  let dispose!: Disposer;
-
-  // We need to create a top-level reactive-context first...
-  createRoot((disposer) => {
-    dispose = () => {
+  return createRoot((disposer) => {
+    const dispose = () => {
       // Cheap way to clean up the root-element
       root.textContent = "";
       disposer();
@@ -156,9 +152,9 @@ export function render(code: () => JSX.Element, root: HTMLElement): Disposer {
 
     // mount the actual dom-elements
     renderChildren(root, [code as any]);
-  });
 
-  // Give the user the ability to clean up the root-element outside of the
-  // usual component structure. E.g, useful for testing.
-  return dispose;
+    // Give the user the ability to clean up the root-element outside of the
+    // usual component structure. E.g, useful for testing.
+    return dispose;
+  });
 }

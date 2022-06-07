@@ -84,13 +84,15 @@ export function onCleanup(fn: Function): void {
  * @see ReactiveContext
  * The only way to create a reactive context.
  */
-export function createRoot(fn: (dispose: Disposer) => unknown): void {
+export function createRoot<T = void>(fn: (dispose: Disposer) => T): T {
   const parentContext = globals.currentContext;
   const context = (globals.currentContext = new ReactiveContext());
 
+  let result!: T;
   try {
-    fn(context.dispose);
+    result = fn(context.dispose);
   } finally {
     globals.currentContext = parentContext;
+    return result;
   }
 }
